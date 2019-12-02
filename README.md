@@ -25,7 +25,7 @@ Solution needs camera and lights in a location.
   - [x] Write config/file.json file
 - [x] Run below command for installing dependencies
   - [x] node install
-  - [x] node deploy
+  - [x] sls deploy
 
 ## More details
 - [x] For more details refer to SmartThings documentation page. Thank you.
