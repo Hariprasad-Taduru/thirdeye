@@ -1,0 +1,24 @@
+{
+  "name": "taduru-thirdeye",
+  "version": "1.0.0",
+  "description": "A smartapp for monitoring intruders.",
+  "main": "thirdeye.js",
+  "author": "Hariprasad Taduru",
+  "license": "ISC",
+  "keywords": [
+    "smartthings",
+    "samsung",
+    "smartapps"
+  ],
+  "scripts": {
+    "start": "node ./thirdeye.js",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --fix --ignore-path .gitignore .",
+    "zip": "if [ ! -d ./out ]; then \nmkdir out\nelse\nrm -r ./out\nfi && zip -r ./out/${PWD##*/} ."
+  },
+  "dependencies": {
+    "request": "2.79.0",
+    "aws-lambda": "^0.1.2",
+    "config": "^1.26.2"
+  }
+}

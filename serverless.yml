@@ -1,0 +1,48 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: thirdeye
+
+frameworkVersion: ">=1.2.0 <2.0.0"
+
+custom:
+  config: ${file(./config/${self:provider.stage}.json)}
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  timeout: 600
+  stage: ${opt:stage, 'prod'}
+  region: ${self:custom.config.region}
+  deploymentBucket:
+    name: ${self:custom.config.bucket}
+    blockPublicAccess: true
+  deploymentPrefix: taduru
+  on_failure: ROLLBACK
+  resourcePolicy:
+    - Effect: Allow
+      Principal: '*'
+      Action: '*'
+
+environment:
+  ST_API_URL: ${self:custom.config.url}
+
+functions:
+  main:
+    name: thirdeye-${self:provider.stage}
+    handler: thirdeye.handler
+    package:
+      include:
+        - thirdeye.js
+        - node_modules/**
