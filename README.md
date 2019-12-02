@@ -19,13 +19,13 @@ Solution needs camera and lights in a location.
 - [x] Configure serverless cli with AWS credentials (region, access key, secret key)
 - [x] Clone this project or Create from scratch (sls create -t aws-nodejs)
 - [x] Implement the project
-        - [x] Main file: index.js
-        - [x] Dependency file package.json
-        - [x] Serverless configuration (yml file)
-        - [x] Write config/file.json file
+      . Main file: index.js
+      . Dependency file package.json
+      . Serverless configuration (yml file)
+      . Write config/file.json file
 - [x] Run below command for installing dependencies
-        - [x] node install
-        - [x] node deploy
+      . node install
+      . node deploy
 
 ## More details
 - [x] For more details refer to SmartThings documentation page. Thank you.
