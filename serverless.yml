@@ -34,9 +34,8 @@ provider:
     - Effect: Allow
       Principal: '*'
       Action: '*'
-
-environment:
-  ST_API_URL: ${self:custom.config.url}
+  environment:
+    ST_API_URL: ${self:custom.config.url}
 
 functions:
   main:
