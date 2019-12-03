@@ -4,7 +4,7 @@ Third Eye
 ## Goal
 SmartThings based SmartApp for monitoring intruders and alerting by switching on lights.
 You can do multiple installtions of this app by selecting different devices.
-Solution needs camera and lights in a location.
+Solution needs motion sensors and lights in a location.
 
 ## Tech Stack
 - [x] NodeJs
