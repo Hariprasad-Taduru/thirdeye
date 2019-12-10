@@ -1,12 +1,11 @@
 'use strict';
-const baseUrl = 'https://api.smartthings.com';
-// const baseUrl = process.env.ST_API_URL;
+const baseUrl = process.env.ST_API_URL;
 
 const request = require('request');
 
 exports.handler = (event, context, callback) => {
     console.log('Base URL from config file is: ', baseUrl);
-    console.log('Event type is:', event.lifecycle);
+    console.log('Event payload: ' + JSON.stringify(event, null, 2));
     console.log(event);
     try {
         let res;
@@ -96,7 +95,7 @@ function createAppInfo() {
         name: 'Third Eye',
         description: 'Smartapp for monitoring intruders.',
         id: 'thirdeye',
-        permissions: ['r:devices:*', 'x:devices:*', 'w:devices:*', 'r:locations:*'],
+        permissions: ['r:devices:*', 'x:devices:*', 'w:devices:*', 'w:installedapps'],
         firstPageId: '1'
     }
 }
@@ -149,7 +148,9 @@ function createConfigPage(pageId, currentConfig) {
 
 function handleInstall(installedApp, authCode) {
    const path = '/installedapps/' + installedApp.installedAppId + '/subscriptions';
-   
+    console.log('Config payload: ' + JSON.stringify(installedApp.config, null, 2));
+
+   console.log('Permissions payload: ' + installedApp.permissions); 
    let subRequest = {
         sourceType: 'DEVICE',
         device: {
@@ -175,7 +176,7 @@ function handleInstall(installedApp, authCode) {
         if (!error && response.statusCode == 200) {
             console.log('Thirdeye subscriptions successful.')
         } else {
-            console.log('Third subscriptions failed.');
+            console.log('Thirdeye subscriptions failed.');
             console.log(error);
         }
     });
@@ -191,7 +192,33 @@ function handleUpdate(installedApp, authToken) {
             'Authorization': 'Bearer ' + authToken
         }
     }, function () {
-        handleInstall(installedApp, authToken);
+	var switches = 'switches' in installedApp.config
+	var motion1 = 'motion1' in installedApp.config
+	console.log('Check for device deletion scenario. switches: ' + switches, 'motion1: ' + motion1);
+	if ((motion1 == false) || (switches == false)) {
+	    console.log("Some device got deleted. Uninstall the app.");		
+	    unInstallApp(installedApp, authToken);
+	} else {
+            handleInstall(installedApp, authToken);
+	}
+    });
+}
+
+function unInstallApp(installedApp, authToken) {
+    // TODO
+    const path = '/v1/installedapps/${installedApp.installedAppId}';
+    request.delete({
+        url: baseUrl + path,
+        headers: {
+            'Authorization': 'Bearer ' + authToken
+        }
+    }, function (error, response, body) {
+         if (!error && response.statusCode == 200) {
+            console.log('uninstall app successful.')
+        } else {
+            console.log('uninstall app failed.');
+            console.log(error, response, body);
+        }
     });
 }
 
@@ -238,4 +265,3 @@ function actuateLight(deviceId, status, authToken) {
         }
     });
 }
-
