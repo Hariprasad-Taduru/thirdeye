@@ -19,6 +19,6 @@
   "dependencies": {
     "request": "2.79.0",
     "aws-lambda": "^0.1.2",
-    "config": "^1.26.2"
+    "config": "^3.3.8"
   }
 }
